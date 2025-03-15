@@ -1,0 +1,60 @@
+<div class="container">
+    <h1 class="m-2 text-main fw-bold text-center">{{this.catName}}</h1>
+    @if (hasMatchingProducts) {
+    <input type="text" [(ngModel)]="Searchvalue" placeholder="search by name..." class="form-control m-3 p-2 w-50 mx-auto">}
+
+    <div class="row">
+        @for (product of productsData | search: Searchvalue; track product._id) {
+            @if (isMatchingCategory(product)) {
+                <div class="col-lg-2 col-md-4 col-sm-6 p-2">
+                    <div class="product p-2 rounded-2 cursor-pointer">
+                        @if (isProductInWishlist(product._id)) {
+                            <i
+                              class="heart-icon fa-solid fa-heart text-main position-absolute p-2 shadow-sm"
+                              (click)="removeFromWishlist(product._id)"
+                            ></i
+                            >} @else {
+                            <i
+                              class="heart-icon fa-regular fa-heart text-main position-absolute p-2 shadow-sm"
+                              (click)="addToWishlist(product._id)"
+                            ></i>
+                            }
+                        <div [routerLink]="['/productdetails', product._id]">
+                            <div class="product-img">
+                                <img [src]="product.imageCover" [alt]="product.title" class="w-100 rounded">
+                            </div>
+
+                            <div class="product-caption">
+                                <h2 class="fs-6 text-main">{{ product.category.name }}</h2>
+                                <h1 class="fs-6 fw-bold">
+                                    {{ product.title.split(' ').slice(0,2).join(' ') }}
+                                </h1>
+
+                                <div class="d-flex justify-content-between">
+                                    <span>{{ product.price | currency: 'GBP' }}</span>
+                                    <div class="small">
+                                        @for (star of [1,2,3,4,5].slice(0, product.ratingsAverage); track $index) {
+                                            <span><i class="fa-solid fa-star rating-color"></i></span>
+                                        }
+                                        @if (product.ratingsAverage % 1 !== 0) {
+                                            <span><i class="fa-solid fa-star-half-stroke rating-color"></i></span>
+                                        }
+                                        <span>{{ product.ratingsAverage }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                <button (click)="addToCart(product._id)" class="w-100 btn-main mt-2">Add to cart <i class="fa-solid fa-cart-shopping"></i></button>
+
+                    </div>
+                </div>
+            }
+        }
+
+        @if (!hasMatchingProducts) {
+            <h4 class="text-center text-danger fw-bold mt-5">❌ No products available for this category.</h4>
+            <button class="btn-main w-auto p-2 d-block mx-auto mt-3" routerLink="/categories">Back to categories.</button>
+        }
+    </div>
+</div>

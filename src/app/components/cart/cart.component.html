@@ -1,0 +1,69 @@
+
+@if (cartData  != null) {
+    @if (cartData.products.length) {
+        <section class="bg-main-light p-2 rounded-2 container mx-auto shadow my-3">
+            <h1 class="fw-bold fs-3">
+                <i class="fa-brands fa-shopify text-main pe-2"></i> Shop Cart
+            </h1>
+
+            <h3 class="fs-5">Total Price : {{cartData.totalCartPrice | currency :'GBP'}}</h3>
+
+            <div class="mx-auto">
+                <button class="btn-main " (click)="clearAllCart()">
+                    <i class="fa-solid fa-broom"></i> Clean Your Cart
+                </button>
+            </div>
+
+            @for (itemCart of cartData.products; track itemCart.product._id) {
+                <div class="row border-bottom border-2 d-flex justify-content-between align-items-center">
+                    <div class="col-2 p-2">
+                        <div class="itemImg">
+                            <img [src]="itemCart.product.imageCover" [alt]="itemCart.product.title" class="w-100 rounded">
+                        </div>
+                    </div>
+
+                    <div class="col-8 p-2">
+                        <div class="itemDetails">
+                            <h2>{{itemCart.product.title}}</h2>
+                            <h3 class="fs-5 fw-bolder">Price: {{itemCart.price | currency :'GBP'}}</h3>
+                            <button (click)="deleteItem(itemCart.product._id)" class="cursor-pointer btn-main p-2 mt-3">
+                                <i class="fa-solid fa-trash-can pe-2 "></i> Delete
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-2 p-2">
+                        <div class="d-flex fs-4 justify-content-between align-items-center text-main">
+                            <button class="border-0 cursor-pointer text-main" 
+                                    (click)="Quantity(itemCart.product._id, itemCart.count+1)">
+                                <i class="fa-regular fa-square-plus"></i>
+                            </button>
+                            <h4 class="fw-bolder ">{{itemCart.count}}</h4>
+                            <button class="border-0" [disabled]="(itemCart.count<=1)" 
+                                    [ngClass]="{'cursor-pointer' : itemCart.count>1, 'text-main' : itemCart.count>1}" 
+                                    (click)="Quantity(itemCart.product._id, itemCart.count-1)">
+                                <i class="fa-regular fa-square-minus "></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <button [routerLink]="['/checkout', cartData._id]" class="w-50 d-block mx-auto btn-main my-3">CheckOut</button>
+        </section>
+    }
+    @else {    <section class="bg-main-light p-2 rounded-2 container mx-auto shadow my-3">
+        <h1 class="fw-bold fs-3">
+            <i class="fa-brands fa-shopify text-main pe-2"></i> Shop Cart
+        </h1>
+        <h1 class="fs-3">No Items Yet...</h1>
+    </section>
+    } 
+}
+@else {    <section class="bg-main-light p-2 rounded-2 container mx-auto shadow my-3">
+    <h1 class="fw-bold fs-3">
+        <i class="fa-brands fa-shopify text-main pe-2"></i> Shop Cart
+    </h1>
+    <h1 class="fs-3">No Items Yet...</h1>
+</section>
+} 

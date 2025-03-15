@@ -1,0 +1,24 @@
+<section>
+    <div class="container p-3">
+        <div class="col-12">
+            <h2 class="text-main fs-2 fw-bolder text-center mb-3">Categories</h2>
+          </div>
+        <div class="row g-2">
+            @for (category of categData; track category._id) {
+                <div class="category col-md-3 ">
+                    <div class="product p-2 rounded-2 cursor-pointer">
+                      <div [routerLink]="['/categoryDetails', category._id]">
+                        <div>
+                            <img [src]="category.image" [alt]="category.name" class="w-100 categoryPic rounded">
+                        </div>
+                        <div>
+                            <h3 class="fw-bold text-center pt-2">{{category.name}}</h3>
+                        </div>
+                      </div>
+                        <button class="btn-main mx-auto d-block" [routerLink]="['/Based on product', category.name]">Products</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
